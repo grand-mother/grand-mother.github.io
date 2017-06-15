@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # The GRAND project
 
 __GRAND__ (**G**iant **R**adio **A**rray for **N**eutrino **D**etection) is a
