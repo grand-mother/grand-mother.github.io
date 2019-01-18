@@ -1,0 +1,36 @@
+.docs-content {
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+    left: 7%;
+    width: 86%;
+    text-align: center;
+    margin: 0px auto;
+    padding: 60px 0px 60px 0px;
+
+    text-align: left;
+}
+
+.docs-item {
+    /* border: 1px solid; */
+    padding: 10px 20px 10px 20px;
+    color: #586069;
+}
+
+.docs-item a,
+.docs-item a:visited {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.docs-item a:hover,
+.docs-item a:focus {
+    text-decoration: underline;
+}
+
+.docs-item h3 {
+    color: #0366d6;
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 5px;
+}
