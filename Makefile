@@ -1,6 +1,6 @@
 MIN := .min
 
-PAGES := site/index.html site/packages.html site/docs.html
+PAGES := site/home.html site/packages.html site/docs.html
 INCLUDES := src/include/head.html src/include/header.html                      \
             src/include/footer.html
 SCRIPTS := site/js/utils$(MIN).js site/js/packages$(MIN).js                    \
