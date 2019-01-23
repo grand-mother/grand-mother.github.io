@@ -1,9 +1,18 @@
 .packages-content {
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+    left: 7%;
+    width: 86%;
+    text-align: center;
     margin: 0px auto;
-    width: 85%;
+    padding: 60px 0px 60px 0px;
+
+    text-align: left;
 }
 
 .packages-item {
+    color: #586069;
     padding: 10px 5px 10px 5px;
     margin-top: 10px;
     -webkit-border-radius: 10px;
@@ -44,6 +53,13 @@
     font-weight: 600;
     font-size: 20px;
     margin-top: -3px;
+}
+
+.packages-github span {
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: -3px;
+    color: #586069;
 }
 
 .packages-badges {

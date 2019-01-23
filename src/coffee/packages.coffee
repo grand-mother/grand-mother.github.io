@@ -50,8 +50,11 @@ format_summary = (pkg, statistics) ->
     lines = statistics.lines.code
     score = Math.floor(100 * (lines - statistics.pep8.count) / lines)
     base_url = "https://github.com/grand-mother/#{pkg}"
+    docs_url = "docs.html?#{pkg}"
 
-    name = html.h3("#{html.a(base_url, pkg)}", class_="packages-name")
+    gh_ref = html.a(base_url, fa.github, class_="packages-github")
+    doc_ref = html.a(docs_url, pkg, class_="packages-name")
+    name = html.h3("#{gh_ref}&nbsp;&nbsp;#{doc_ref}")
     authors = statistics.contributors
         .map (c) ->
             "#{html.a(c.html_url, c.login)} (#{c.contributions})"
@@ -78,5 +81,5 @@ format_summary = (pkg, statistics) ->
 $ document
     .ready ->
         initialise = (pkg) -> on_statistics(pkg, format_summary)
-        initialise pkg for pkg in ["framework", "framework-example",
-            "grand-radiomorphing", "tools"]
+        initialise pkg for pkg in ["framework", "radio-simus",
+            "grand-radiomorphing", "tools"].sort()

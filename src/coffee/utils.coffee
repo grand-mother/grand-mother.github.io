@@ -10,8 +10,8 @@ url =
 
 # HTML formatters
 html =
-    a: (href, content="") ->
-        "<a href=\"#{href}\">#{content}</a>"
+    a: (href, content="", class_) ->
+        "<a href=\"#{href}\" class=\"#{class_}\">#{content}</a>"
     div: (content, class_="") ->
         "<div class=\"#{class_}\">#{content}</div>"
     h3: (content, class_="") ->
@@ -28,8 +28,10 @@ html =
 # Font Awesome formatters
 font_awesome = (class_) ->
     "<span class=\"#{class_}\" \\>"
+
 fa =
     user: font_awesome "fas fa-user-edit"
+    github: font_awesome "fab fa-github"
 
 # Export utilities to a global object
 @utils =
