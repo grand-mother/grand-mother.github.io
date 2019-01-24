@@ -4,25 +4,51 @@
     box-sizing: border-box;
 }
 
-.home-menu {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    text-align: center;
+#header {
+    position: relative;
+    display: block;
+
     padding: 0.1em;
     line-height: 1em;
+    text-align: center;
     background-color: #24292e;
-    z-index: 2;
 }
 
-.home-menu a {
+#header a {
     color: white;
     font-size: 120%;
 }
-.home-menu a:hover,
-.home-menu a:focus {
+#header a:hover,
+#header a:focus {
     background: none;
     border: none;
+}
+
+#content {
+    position: relative;
+    margin: 10px 0px 60px 0px;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    padding: 0.8em;
+    background-color: #24292e;
+}
+
+#footer a,
+#footer a:visited {
+    color: white;
+    text-decoration: none;
+}
+#footer a:hover,
+#footer a:focus {
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .fancy-text {
@@ -34,47 +60,22 @@
     text-decoration: none;
 }
 
-.content {
-    width: 100%;
-    height: 88%;
-    top: 20%;
-    margin: auto;
-    position: fixed !important;
-    text-align: center;
+.shaded-box {
+    padding: 10px 5px 10px 5px;
+    -webkit-border-radius: 10px;
+            border-radius: 10px;
+    -webkit-box-shadow: 15px 0px 45px -10px rgba(10, 16, 34, 0.2);
+            box-shadow: 15px 0px 45px -10px rgba(10, 16, 34, 0.2);
 }
 
-.content-item {
-    padding-top: 15px;
-    margin-top: 40px;
+.shake {
     -webkit-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
 }
-.content-item:hover {
-  -webkit-transform: translate(0px, -2px);
-      -ms-transform: translate(0px, -2px);
-          transform: translate(0px, -2px);
-}
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 0.8em;
-    background-color: #24292e;
-    z-index: 1;
-}
-
-.footer a,
-.footer a:visited {
-    color: white;
-    text-decoration: none;
-}
-.footer a:hover,
-.footer a:focus {
-    background: none;
-    border: none;
-    font-weight: bold;
-    text-decoration: none;
+.shake:hover {
+    -webkit-transform: translate(0px, -2px);
+        -ms-transform: translate(0px, -2px);
+            transform: translate(0px, -2px);
 }

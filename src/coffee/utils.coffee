@@ -1,19 +1,24 @@
 # Noteworthy urls
 url =
-    # Formatter for github raw files
+    # Formater for github raw files
     raw: (pkg, branch, path) ->
         "https://raw.githubusercontent.com/grand-mother/\
          #{pkg}/#{branch}/#{path}"
-    # Formatter for github API
+    # Formater for github API
     api: (pkg, path="") ->
         "https://api.github.com/repos/grand-mother/#{pkg}#{path}"
+    # Formater for github blobs
+    blob: (path, branch="master") ->
+        "https://github.com/grand-mother/framework/blob/#{branch}/#{path}"
 
 # HTML formatters
 html =
-    a: (href, content="", class_) ->
+    a: (href, content="", class_="") ->
         "<a href=\"#{href}\" class=\"#{class_}\">#{content}</a>"
     div: (content, class_="") ->
         "<div class=\"#{class_}\">#{content}</div>"
+    h2: (content, class_="") ->
+        "<h2 class=\"#{class_}\">#{content}</h2>"
     h3: (content, class_="") ->
         "<h3 class=\"#{class_}\">#{content}</h3>"
     img: (src, alt="") ->

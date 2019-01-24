@@ -1,6 +1,7 @@
 # Unpack the utilities
 [fa, html, url] = [utils.fa, utils.html, utils.url]
 
+
 # Colour map for shields.io badges
 colourmap = (score) ->
     colours = ["red", "orange", "yellow", "yellowgreen", "green",
@@ -15,6 +16,7 @@ colourmap = (score) ->
 format_badge_html = (href, src) ->
     html.a(href, html.img src)
 
+
 badge =
     build: (pkg) -> format_badge_html(
         "https://travis-ci.com/grand-mother/#{pkg}",
@@ -23,6 +25,10 @@ badge =
         "https://codecov.io/gh/grand-mother/#{pkg}",
         "https://codecov.io/gh/grand-mother/#{pkg}\
             /branch/master/graph/badge.svg")
+    docs: (pkg, score) -> format_badge_html(
+        "https://github.com/grand-mother/#{pkg}\
+            /blob/master/.stats.json",
+        "https://img.shields.io/badge/docs-#{score}%25-#{colourmap score}.svg")
     style: (pkg, score) -> format_badge_html(
         "https://github.com/grand-mother/#{pkg}\
             /blob/master/.stats.json",
@@ -30,6 +36,7 @@ badge =
     version: (pkg) -> format_badge_html(
         "https://pypi.org/project/grand-#{pkg}",
         "https://img.shields.io/pypi/v/g.svg")
+
 
 # Get and use the statistics of a package
 on_statistics = (pkg, action, branch="master") ->
@@ -45,16 +52,22 @@ on_statistics = (pkg, action, branch="master") ->
         stats.contributors = gh_contrib
         action(pkg, stats))
 
+
 # Format a summary of a package
 format_summary = (pkg, statistics) ->
     lines = statistics.lines.code
-    score = Math.floor(100 * (lines - statistics.pep8.count) / lines)
+    style_score = Math.floor(100 * (lines - statistics.pep8.count) / lines)
+    d = statistics.doc.statistics
+    if d?
+        docs_score = Math.floor(100 * (d.tokens - d.n_errors) / d.tokens)
+    else
+        docs_score = 0
     base_url = "https://github.com/grand-mother/#{pkg}"
     docs_url = "docs.html?#{pkg}"
 
     gh_ref = html.a(base_url, fa.github, class_="packages-github")
     doc_ref = html.a(docs_url, pkg, class_="packages-name")
-    name = html.h3("#{gh_ref}&nbsp;&nbsp;#{doc_ref}")
+    name = html.h2("#{doc_ref}&nbsp;&nbsp;#{gh_ref}")
     authors = statistics.contributors
         .map (c) ->
             "#{html.a(c.html_url, c.login)} (#{c.contributions})"
@@ -62,20 +75,21 @@ format_summary = (pkg, statistics) ->
 
     item = html.div("""
         #{name}
-        <p>#{statistics.description}</p>
+        <p class="packages-description">#{statistics.description}</p>
         <p>#{fa.user}&nbsp;&nbsp;#{authors}</p>
-    """, class_="packages-description pure-u-3-4")
+    """, class_="pure-u-3-4")
     badges = html.div("""
-        #{badge.style(pkg, score)}
+        #{badge.style(pkg, style_score)}
         #{badge.coverage pkg}
         #{badge.build pkg}
+        #{badge.docs(pkg, docs_score)}
         #{badge.version pkg}
     """, class_ = "packages-badges pure-u-1-4")
 
-    $ ".packages-content"
-    .append html.div("#{item}#{badges}", class_="packages-item pure-g")
-    $ ".packages-content"
-    .fadeIn "slow"
+    $ "#content"
+        .append html.div("#{item}#{badges}",
+            class_="packages-item shaded-box shake pure-g")
+
 
 # Set the document loader
 $ document

@@ -1,0 +1,20 @@
+.home-content {
+    margin: auto;
+    text-align: center;
+}
+
+#home-item {
+    position: fixed;
+    left: 50%;
+    bottom: 60%;
+    margin-left: -120px;
+    margin-bottom: -120px;
+    -webkit-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+#home-item:hover {
+  -webkit-transform: translate(2px, -4px);
+      -ms-transform: translate(2px, -4px);
+          transform: translate(2px, -4px);
+}
