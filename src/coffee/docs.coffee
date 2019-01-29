@@ -3,23 +3,21 @@
 
 markdown = new showdown.Converter()
 markdown.setFlavor "github"
+markdown.setOption("simpleLineBreaks", false)
 
 
 # Get the brief description from a docstring
 brief = (s) ->
     return "" if !s?
-    s.split("\n", 1)[0]
-     .replace(/^\s+|\s+$/g, "")
+    markdown.makeHtml(s.split(/\r?\n *\r?\n/, 1)[0])
 
 
 # Process a docstring by splitting the brief and detailed parts
 process_description = (s) ->
     return ["", ""] if !s?
-    [unused, brief, detail] = s.split(/(.+)\r?\n([\s\S]*)/m)
-    brief = s if !brief?
-    brief = brief.replace(/^\s+|\s+$/g, "")
-    detail = if detail? then markdown.makeHtml(detail) else ""
-    [brief, detail]
+    [brief, detail...] = s.split(/\r?\n *\r?\n/)
+    detail = detail.join "\n"
+    (markdown.makeHtml(v) for v in [brief, detail])
 
 
 # Shortcuts for doc references
@@ -271,7 +269,7 @@ format_class = (pkg, name, docs, navpkg) ->
     attributes = (docref.attribute(pkg, name, k) for k in attributes_names)
         .join ", "
 
-    [brief, detail] = process_description docs.doc
+    [brief, detail] = process_description text
     tl = docref.classes(pkg, tag="Class")
     content = ["""
         <h2>#{tl} #{navpkg.join "."}.#{docref.class(pkg, name)}#{bases}</h2>
