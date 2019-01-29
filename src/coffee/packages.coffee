@@ -86,14 +86,29 @@ format_summary = (pkg, statistics) ->
         #{badge.version pkg}
     """, class_ = "packages-badges pure-u-1-4")
 
-    $ "#content"
-        .append html.div("#{item}#{badges}",
-            class_="packages-item shaded-box shake pure-g")
+    $ "\#package-#{pkg}"
+        .html "#{item}#{badges}"
 
 
 # Set the document loader
 $ document
     .ready ->
+        # List of packages to process
+        packages = ["framework", "radio-simus", "grand-radiomorphing",
+                    "tools"].sort()
+
+        # Prepare the packages sections, in order to preserve their order
+        content = []
+        for pkg in packages
+            content.push """
+                <div id="package-#{pkg}"
+                     class="packages-item shaded-box shake pure-g">
+                </div>
+            """
+        console.log content
+        $ "#content"
+            .html(content.join "")
+
+        # Fill the sections
         initialise = (pkg) -> on_statistics(pkg, format_summary)
-        initialise pkg for pkg in ["framework", "radio-simus",
-            "grand-radiomorphing", "tools"].sort()
+        initialise pkg for pkg in packages
