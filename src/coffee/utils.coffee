@@ -11,6 +11,7 @@ url =
     blob: (path, branch="master") ->
         "https://github.com/grand-mother/framework/blob/#{branch}/#{path}"
 
+
 # HTML formatters
 html =
     a: (href, content="", class_="") ->
@@ -23,23 +24,67 @@ html =
         "<h3 class=\"#{class_}\">#{content}</h3>"
     img: (src, alt="") ->
         "<img src=\"#{src}\" alt=\"#{alt}\">"
+    li: (content, class_="") ->
+        "<li class=\"#{class_}\">#{content}</li>"
     span: (content, class_="") ->
         "<span class=\"#{class_}\">#{content}</span>"
     tr: (content, class_="") ->
         "<tr class=\"#{class_}\">#{content}</tr>"
     td: (content, class_="") ->
         "<td class=\"#{class_}\">#{content}</td>"
+    ul: (content, class_="") ->
+        "<ul class=\"#{class_}\">#{content}</ul>"
+
 
 # Font Awesome formatters
 font_awesome = (class_) ->
     "<span class=\"#{class_}\" \\>"
 
+
 fa =
     user: font_awesome "fas fa-user-edit"
     github: font_awesome "fab fa-github"
 
+
+# Colour map for shields.io badges
+colourmap = (score) ->
+    colours = ["red", "orange", "yellow", "yellowgreen", "green",
+               "brightgreen"]
+    n = colours.length
+    index = Math.floor(n * score * 0.01)
+    index = Math.min(n - 1, index)
+    index = Math.max(0, index)
+    colours[index]
+
+
+# Badges formatters
+format_badge_html = (href, src) ->
+    html.a(href, html.img src)
+
+
+badge =
+    build: (pkg) -> format_badge_html(
+        "https://travis-ci.com/grand-mother/#{pkg}",
+        "https://travis-ci.com/grand-mother/#{pkg}.svg?branch=master")
+    coverage: (pkg) -> format_badge_html(
+        "https://codecov.io/gh/grand-mother/#{pkg}",
+        "https://codecov.io/gh/grand-mother/#{pkg}\
+            /branch/master/graph/badge.svg")
+    docs: (pkg, score, path) -> format_badge_html(
+        """reports.html?#{pkg}/docs#{if path? then "/" + path else ""}""",
+        "https://img.shields.io/badge/docs-#{score}%25-#{colourmap score}.svg")
+    style: (pkg, score) -> format_badge_html(
+        "https://github.com/grand-mother/#{pkg}\
+            /blob/master/.stats.json",
+        "https://img.shields.io/badge/pep8-#{score}%25-#{colourmap score}.svg")
+    version: (pkg) -> format_badge_html(
+        "https://pypi.org/project/grand-#{pkg}",
+        "https://img.shields.io/pypi/v/g.svg")
+
+
 # Export utilities to a global object
 @utils =
+    badge: badge
     fa: fa
     html: html
     url: url

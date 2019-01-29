@@ -502,8 +502,8 @@ format_docs = (pkg, pkgpath, docpath, docs) ->
 # Parse the url parameters
 parse_url = () ->
     [baseurl, tag] = window.location.href.split("?", 2)
-    if not tag
-        return
+    if !tag?
+        return [undefined]
     [pkg, docpath...] = tag.split("/")
     [pkg, pkgpath] = pkg.split(".", 2)
     [pkg, pkgpath, docpath]
@@ -522,4 +522,5 @@ on_docs = (pkg, pkgpath, docpath, action, branch="master") ->
 $ document
     .ready ->
         [pkg, pkgpath, docpath] = do parse_url
-        on_docs(pkg, pkgpath, docpath, format_docs)
+        if pkg?
+            on_docs(pkg, pkgpath, docpath, format_docs)

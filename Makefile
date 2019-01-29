@@ -1,10 +1,10 @@
 MIN := .min
 
-PAGES := site/home.html site/packages.html site/docs.html
+PAGES := site/home.html site/packages.html site/docs.html site/reports.html
 INCLUDES := src/include/head.html src/include/header.html                      \
             src/include/footer.html
 SCRIPTS := site/js/utils$(MIN).js site/js/packages$(MIN).js                    \
-           site/js/docs$(MIN).js 
+           site/js/docs$(MIN).js site/js/reports$(MIN).js
 
 PYTHON := python
 COFFEE := coffee

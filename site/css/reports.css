@@ -1,0 +1,40 @@
+.reports-item {
+    color: #586069;
+    margin: 10px 5% 0px 5%;
+}
+
+.reports-item a,
+.reports-item a:visited {
+    color: #0366d6;
+    text-decoration: none;
+}
+.reports-item a:hover,
+.reports-item a:focus {
+    text-decoration: underline;
+}
+
+.reports-entity {
+    padding-left: 10px;
+}
+
+.reports-brief {
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.reports-brief-smaller {
+    font-size: 1.05em;
+}
+
+.reports-line {
+    font-size: 85%;
+    padding: .1em .1em;
+}
+
+.reports-docs-tag {
+    background-color: rgba(27,31,35,.05);
+    border-radius: 3px;
+    font-size: 85%;
+    margin: 0;
+    padding: .2em .4em;
+}

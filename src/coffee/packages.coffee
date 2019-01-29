@@ -1,41 +1,5 @@
 # Unpack the utilities
-[fa, html, url] = [utils.fa, utils.html, utils.url]
-
-
-# Colour map for shields.io badges
-colourmap = (score) ->
-    colours = ["red", "orange", "yellow", "yellowgreen", "green",
-               "brightgreen"]
-    n = colours.length
-    index = Math.floor(n * score * 0.01)
-    index = Math.min(n - 1, index)
-    index = Math.max(0, index)
-    colours[index]
-
-# Badges formatters
-format_badge_html = (href, src) ->
-    html.a(href, html.img src)
-
-
-badge =
-    build: (pkg) -> format_badge_html(
-        "https://travis-ci.com/grand-mother/#{pkg}",
-        "https://travis-ci.com/grand-mother/#{pkg}.svg?branch=master")
-    coverage: (pkg) -> format_badge_html(
-        "https://codecov.io/gh/grand-mother/#{pkg}",
-        "https://codecov.io/gh/grand-mother/#{pkg}\
-            /branch/master/graph/badge.svg")
-    docs: (pkg, score) -> format_badge_html(
-        "https://github.com/grand-mother/#{pkg}\
-            /blob/master/.stats.json",
-        "https://img.shields.io/badge/docs-#{score}%25-#{colourmap score}.svg")
-    style: (pkg, score) -> format_badge_html(
-        "https://github.com/grand-mother/#{pkg}\
-            /blob/master/.stats.json",
-        "https://img.shields.io/badge/pep8-#{score}%25-#{colourmap score}.svg")
-    version: (pkg) -> format_badge_html(
-        "https://pypi.org/project/grand-#{pkg}",
-        "https://img.shields.io/pypi/v/g.svg")
+[badge, fa, html, url] = [utils.badge, utils.fa, utils.html, utils.url]
 
 
 # Get and use the statistics of a package
@@ -59,7 +23,11 @@ format_summary = (pkg, statistics) ->
     style_score = Math.floor(100 * (lines - statistics.pep8.count) / lines)
     d = statistics.doc.statistics
     if d?
-        docs_score = Math.floor(100 * (d.tokens - d.n_errors) / d.tokens)
+        [n_errors, n_tokens] = [0, 0]
+        for path, obj of d
+            n_errors += obj.n_errors
+            n_tokens += obj.n_tokens
+        docs_score = Math.floor(100 * (n_tokens - n_errors) / n_tokens)
     else
         docs_score = 0
     base_url = "https://github.com/grand-mother/#{pkg}"
@@ -84,7 +52,7 @@ format_summary = (pkg, statistics) ->
         #{badge.build pkg}
         #{badge.docs(pkg, docs_score)}
         #{badge.version pkg}
-    """, class_ = "packages-badges pure-u-1-4")
+    """, class_ = "pure-u-1-4 packages-badges")
 
     $ "\#package-#{pkg}"
         .html "#{item}#{badges}"
@@ -105,7 +73,6 @@ $ document
                      class="packages-item shaded-box shake pure-g">
                 </div>
             """
-        console.log content
         $ "#content"
             .html(content.join "")
 
