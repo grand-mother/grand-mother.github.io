@@ -1,10 +1,19 @@
 # Unpack and configure the utilities
 [fa, html, url] = [utils.fa, utils.html, utils.url]
 
-markdown = new showdown.Converter()
+
+markdown = new showdown.Converter(
+    extensions : [
+        ->
+            ext =
+                type: "lang"
+                regex: /(grand-mother[/]\w+)#(\d+)/g
+                replace: "[#$2](https://github.com/$1/issues/$2)"
+            [ext]
+    ]
+)
 markdown.setFlavor "github"
 markdown.setOption("simpleLineBreaks", false)
-
 
 # Get the brief description from a docstring
 brief = (s) ->
