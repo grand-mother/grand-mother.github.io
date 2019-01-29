@@ -129,7 +129,7 @@ format_modules = (pkg, docs, navpkg) ->
         html.div("""
             <h3>#{docref.module(pkg, name)}</h3>
             <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
-            <p>Defined in #{html.a(url.blob(path), path)}.<p>
+            <p>Defined in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
 
     # Format the main content
@@ -193,8 +193,8 @@ format_functions = (pkg, docs, navpkg) ->
             <h3>#{docref.function(pkg, name)} (#{meta.prototype})</h3>
             <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
             <p>Defined at line
-                <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-                in #{html.a(url.blob(path), path)}.<p>
+                <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+                in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
 
     # Format the main content
@@ -220,8 +220,8 @@ format_function = (pkg, name, docs, navpkg) ->
             (#{meta.prototype})</h2>
         <p class=\"docs-brief\">#{brief}</p>
         <p>Defined at line
-            <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-            in #{html.a(url.blob(path), path)}.<p>
+            <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+            in #{html.a(url.blob(pkg, path), path)}.<p>
         #{decorate_function meta}
         <div class="docs-detail">#{detail}</div>
     """, class_="docs-item")
@@ -236,8 +236,8 @@ format_classes = (pkg, docs, navpkg) ->
             <h3>#{docref.class(pkg, name)}</h3>
             <p class="docs-brief docs-brief-smaller">#{brief text}</p>
             <p>Defined at line
-                <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-                in #{html.a(url.blob(path), path)}.<p>
+                <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+                in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
 
     # Format the main content
@@ -277,8 +277,8 @@ format_class = (pkg, name, docs, navpkg) ->
         <h2>#{tl} #{navpkg.join "."}.#{docref.class(pkg, name)}#{bases}</h2>
         <p class="docs-brief">#{brief}</p>
         <p>Defined at line
-            <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-            in #{html.a(url.blob(path), path)}.<p>
+            <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+            in #{html.a(url.blob(pkg, path), path)}.<p>
     """]
 
     if attributes.length
@@ -310,8 +310,8 @@ format_methods = (pkg, class_name, docs, navpkg) ->
             </h3>
             <p>#{brief(text)}</p>
             <p>Defined at line
-                <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-                in #{html.a(url.blob(path), path)}.<p>
+                <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+                in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
 
     # Format the main content
@@ -342,8 +342,8 @@ format_method = (pkg, class_name, name, docs, navpkg) ->
         <h2>#{tl} #{navpkg.join "."}.#{cl}.#{mt} (#{meta.prototype})</h2>
         <p>#{brief}</p>
         <p>Defined at line
-            <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-            in #{html.a(url.blob(path), path)}.<p>
+            <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+            in #{html.a(url.blob(pkg, path), path)}.<p>
         #{decorate_function meta}
         <div class="docs-detail">#{detail}</div>
     """, class_="docs-item")
@@ -358,8 +358,8 @@ format_attributes = (pkg, class_name, docs, navpkg) ->
             <h3>#{docref.attribute(pkg, class_name, name)}</h3>
             <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
             <p>Defined at line
-                <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-                in #{html.a(url.blob(path), path)}.<p>
+                <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+                in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
 
     # Format the main content
@@ -390,8 +390,8 @@ format_attribute = (pkg, class_name, name, docs, navpkg) ->
         <h2>#{tl} #{navpkg.join "."}.#{cl}.#{mt}</h2>
         <p class="docs-brief">#{brief}</p>
         <p>Defined at line
-            <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-            in #{html.a(url.blob(path), path)}.<p>
+            <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+            in #{html.a(url.blob(pkg, path), path)}.<p>
     """]
 
     if detail
@@ -409,8 +409,8 @@ format_definitions = (pkg, docs, navpkg) ->
             <h3>#{docref.definition(pkg, name)}</h3>
             <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
             <p>Defined at line
-                <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-                in #{html.a(url.blob(path), path)}.<p>
+                <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+                in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
  
     # Format the main content
@@ -435,8 +435,8 @@ format_definition = (pkg, name, docs, navpkg) ->
         <h2>#{tl} #{navpkg.join "."}.#{docref.definition(pkg, name)}</h2>
         <p class="docs-brief">#{brief}</p>
         <p>Defined at line
-            <a href="#{url.blob(path)}\#L#{line}">#{line}</a>
-            in #{html.a(url.blob(path), path)}.<p>
+            <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
+            in #{html.a(url.blob(pkg, path), path)}.<p>
     """]
 
     if detail

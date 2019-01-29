@@ -3,12 +3,12 @@
 
 
 # Generate a refrence to the code
-docref = (path, line) ->
+docref = (pkg, path, line) ->
     if line?
-        href = "#{url.blob(path)}\#L#{line}"
+        href = "#{url.blob(pkg, path)}\#L#{line}"
         tag = line
     else
-        href = url.blob(path)
+        href = url.blob(pkg, path)
         tag = path
     "<a href=\"#{href}\" class=\"reports-line\">#{tag}</a>"
 
@@ -63,7 +63,7 @@ format_docs_summary = (pkg, category, stats) ->
         content.push html.div("""
             <h2>
                 #{docbadge(pkg, data.n_tokens, data.n_errors, path)}
-                #{docref(path)}
+                #{docref(pkg, path)}
             </h2>
             <p class="reports-brief reports-brief-smaller">#{brief}</p>
         """, class_="shaded-box shake reports-entity")
@@ -97,7 +97,7 @@ format_docs_entity = (pkg, category, args, stats) ->
         [line, errors] = token
         errors = [html.li(e) for e in errors]
         content.push html.div("""
-            <h3>In #{tag} at line #{docref(path, line)}:</h3>
+            <h3>In #{tag} at line #{docref(pkg, path, line)}:</h3>
             <ul>#{errors}</ul>
         """, class_="reports-docs-token shaded-box shake")
 

@@ -8,8 +8,9 @@ url =
     api: (pkg, path="") ->
         "https://api.github.com/repos/grand-mother/#{pkg}#{path}"
     # Formater for github blobs
-    blob: (path, branch="master") ->
-        "https://github.com/grand-mother/framework/blob/#{branch}/#{path}"
+    blob: (pkg, path, branch="master") ->
+        pkg = pkg.split(".", 1)[0]
+        "https://github.com/grand-mother/#{pkg}/blob/#{branch}/#{path}"
 
 
 # HTML formatters
