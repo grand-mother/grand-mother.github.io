@@ -63,7 +63,7 @@ $ document
     .ready ->
         # List of packages to process
         packages = ["framework", "radio-simus", "grand-radiomorphing",
-                    "tools"].sort()
+                    "tools", "shared-libs"].sort()
 
         # Prepare the packages sections, in order to preserve their order
         content = []
