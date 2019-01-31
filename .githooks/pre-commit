@@ -1,0 +1,3 @@
+#!/bin/bash
+make > /dev/null
+git add site/*.html site/js

@@ -11,6 +11,9 @@ COFFEE := coffee
 MINIFY := google-closure-compiler
 
 
+.PHONY: init
+
+
 all: $(PAGES) $(SCRIPTS)
 
 site/%.html: src/pages/%.html $(INCLUDES)
@@ -29,3 +32,8 @@ site/js/%.min.js: site/js/%.js
 
 clean:
 	@rm -rf $(PAGES) site/js
+
+init:
+	@echo "setting .git/hooks"
+	@find .git/hooks -type l -exec rm {} \;
+	@find .githooks -type f -exec ln -sf ../../{} .git/hooks/ \;
