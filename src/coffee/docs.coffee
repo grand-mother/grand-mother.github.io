@@ -96,7 +96,7 @@ format_main = (pkg, docs, navpkg) ->
     [brief, detail] = process_description(docs.doc)
     content = ["""
     <h1>#{navpkg.join "."}</h1>
-    <p class="docs-brief">#{brief}<p>
+    <div class="docs-brief">#{brief}</div>
     """]
 
     if modules.length
@@ -135,7 +135,7 @@ format_modules = (pkg, docs, navpkg) ->
     format_module = (name, path, text) ->
         html.div("""
             <h3>#{docref.module(pkg, name)}</h3>
-            <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
+            <div class="docs-brief docs-brief-smaller">#{brief(text)}</div>
             <p>Defined in #{html.a(url.blob(pkg, path), path)}.<p>
             """, class_="shaded-box shake")
 
@@ -198,7 +198,7 @@ format_functions = (pkg, docs, navpkg) ->
         path = altpath if altpath?
         html.div("""
             <h3>#{docref.function(pkg, name)} (#{meta.prototype})</h3>
-            <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
+            <div class="docs-brief docs-brief-smaller">#{brief(text)}</div>
             <p>Defined at line
                 <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
                 in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -225,7 +225,7 @@ format_function = (pkg, name, docs, navpkg) ->
     html.div("""
         <h2>#{tl} #{navpkg.join "."}.#{docref.function(pkg, name)}
             (#{meta.prototype})</h2>
-        <p class=\"docs-brief\">#{brief}</p>
+        <div class=\"docs-brief\">#{brief}</div>
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -241,7 +241,7 @@ format_classes = (pkg, docs, navpkg) ->
         path = altpath if altpath?
         html.div("""
             <h3>#{docref.class(pkg, name)}</h3>
-            <p class="docs-brief docs-brief-smaller">#{brief text}</p>
+            <div class="docs-brief docs-brief-smaller">#{brief text}</div>
             <p>Defined at line
                 <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
                 in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -282,7 +282,7 @@ format_class = (pkg, name, docs, navpkg) ->
     tl = docref.classes(pkg, tag="Class")
     content = ["""
         <h2>#{tl} #{navpkg.join "."}.#{docref.class(pkg, name)}#{bases}</h2>
-        <p class="docs-brief">#{brief}</p>
+        <div class="docs-brief">#{brief}</div>
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -315,7 +315,7 @@ format_methods = (pkg, class_name, docs, navpkg) ->
             <h3>#{docref.method(pkg, class_name, name)}
                 (#{meta.prototype})
             </h3>
-            <p>#{brief(text)}</p>
+            <div class="docs-brief docs-brief-smaller">#{brief(text)}</div>
             <p>Defined at line
                 <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
                 in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -347,7 +347,7 @@ format_method = (pkg, class_name, name, docs, navpkg) ->
     [brief, detail] = process_description text
     html.div("""
         <h2>#{tl} #{navpkg.join "."}.#{cl}.#{mt} (#{meta.prototype})</h2>
-        <p>#{brief}</p>
+        <div class="docs-brief">#{brief}</div>
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -363,7 +363,7 @@ format_attributes = (pkg, class_name, docs, navpkg) ->
         path = altpath if altpath?
         html.div("""
             <h3>#{docref.attribute(pkg, class_name, name)}</h3>
-            <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
+            <div class="docs-brief docs-brief-smaller">#{brief(text)}</div>
             <p>Defined at line
                 <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
                 in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -395,7 +395,7 @@ format_attribute = (pkg, class_name, name, docs, navpkg) ->
     mt = docref.attribute(pkg, class_name, name)
     content = ["""
         <h2>#{tl} #{navpkg.join "."}.#{cl}.#{mt}</h2>
-        <p class="docs-brief">#{brief}</p>
+        <div class="docs-brief">#{brief}</div>
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -414,7 +414,7 @@ format_definitions = (pkg, docs, navpkg) ->
         path = altpath if altpath?
         html.div("""
             <h3>#{docref.definition(pkg, name)}</h3>
-            <p class="docs-brief docs-brief-smaller">#{brief(text)}</p>
+            <div class="docs-brief docs-brief-smaller">#{brief(text)}</div>
             <p>Defined at line
                 <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
                 in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -440,7 +440,7 @@ format_definition = (pkg, name, docs, navpkg) ->
     tl = docref.definitions(pkg, tag="Definition")
     content = ["""
         <h2>#{tl} #{navpkg.join "."}.#{docref.definition(pkg, name)}</h2>
-        <p class="docs-brief">#{brief}</p>
+        <div class="docs-brief">#{brief}</div>
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
@@ -512,7 +512,11 @@ parse_url = () ->
     if !tag?
         return [undefined]
     [pkg, docpath...] = tag.split("/")
-    [pkg, pkgpath] = pkg.split(".", 2)
+    [pkg, pkgpath...] = pkg.split(".")
+    if pkgpath.length
+        pkgpath = pkgpath.join "."
+    else
+        pkgpath = undefined
     [pkg, pkgpath, docpath]
 
 
