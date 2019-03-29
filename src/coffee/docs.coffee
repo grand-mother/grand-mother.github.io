@@ -521,12 +521,25 @@ parse_url = () ->
 
 
 # Get and use the docs of a package
+identity = (x) ->x
+empty = -> $.Deferred().resolve().promise()
+
 on_docs = (pkg, pkgpath, docpath, action, branch="master") ->
-    $.getJSON url.raw(pkg, branch, ".stats.json")
-        .done (stats) ->
+    $.when(
+        $.getJSON url.raw(pkg, branch, ".stats.json")
+            .then(identity, empty)
+        $.getJSON url.raw(pkg, branch, ".grand-pkg.json")
+            .then(identity, empty)
+    )
+    .then(
+        (old_stats, pkg_data) ->
+            stats = if old_stats? then old_stats else pkg_data
             action(pkg, pkgpath, docpath, stats.doc)
-        .fail () ->
+    )
+    .fail(
+        () ->
             console.log "failed to load docs for #{pkg}"
+    )
 
 
 # Set the document loader

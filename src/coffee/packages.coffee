@@ -3,18 +3,27 @@
 
 
 # Get and use the statistics of a package
+identity = (x) ->x
+empty = -> $.Deferred().resolve().promise()
+
 on_statistics = (pkg, action, branch="master") ->
-    pkg_stats = null
-    gh_stats = null
-    gh_contrib = null
     $.when(
-        $.getJSON(url.raw(pkg, branch, ".stats.json"), (s) -> pkg_stats = s),
-        $.getJSON(url.api(pkg), (s) -> gh_stats = s),
-        $.getJSON(url.api(pkg, "/contributors"), (s) -> gh_contrib = s))
-    .then( ->
-        stats = $.extend(gh_stats, pkg_stats)
-        stats.contributors = gh_contrib
-        action(pkg, stats))
+        $.getJSON url.raw(pkg, branch, ".stats.json")
+            .then(identity, empty)
+        $.getJSON url.raw(pkg, branch, ".grand-pkg.json")
+            .then(identity, empty)
+        $.getJSON url.api(pkg)
+            .then(identity)
+        $.getJSON url.api(pkg, "/contributors")
+            .then(identity)
+    )
+    .then(
+        (old_stats, pkg_data, gh_stats, gh_contrib) ->
+            pkg_stats = if old_stats? then old_stats else pkg_data
+            stats = $.extend(gh_stats, pkg_stats)
+            stats.contributors = gh_contrib
+            action(pkg, stats)
+    )
 
 
 # Format a summary of a package

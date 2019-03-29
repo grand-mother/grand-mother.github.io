@@ -76,7 +76,7 @@ badge =
         "https://img.shields.io/badge/docs-#{score}%25-#{colourmap score}.svg")
     style: (pkg, score) -> format_badge_html(
         "https://github.com/grand-mother/#{pkg}\
-            /blob/master/.stats.json",
+            /blob/master/.grand-pkg.json",
         "https://img.shields.io/badge/pep8-#{score}%25-#{colourmap score}.svg")
     version: (pkg) -> format_badge_html(
         "https://pypi.org/project/grand-#{pkg}",

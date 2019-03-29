@@ -142,12 +142,25 @@ parse_url = () ->
 
 
 # Get and report the statistics of a package
+identity = (x) ->x
+empty = -> $.Deferred().resolve().promise()
+
 on_statistics = (pkg, category, args, action, branch="master") ->
-    $.getJSON url.raw(pkg, branch, ".stats.json")
-        .done (stats) ->
+    $.when(
+        $.getJSON url.raw(pkg, branch, ".stats.json")
+            .then(identity, empty)
+        $.getJSON url.raw(pkg, branch, ".grand-pkg.json")
+            .then(identity, empty)
+    )
+    .then(
+        (old_stats, pkg_data) ->
+            stats = if old_stats? then old_stats else pkg_data
             action(pkg, category, args, stats)
-        .fail () ->
-            console.log "failed to load docs for #{pkg}"
+    )
+    .fail(
+        () ->
+            console.log "failed to load data for #{pkg}"
+    )
 
 
 # Set the document loader
