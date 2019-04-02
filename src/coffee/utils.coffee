@@ -1,10 +1,10 @@
 # Mapping of maanaged packages (name: git-name)
 packages =
+    grand_libs: "libs"
     grand_pkg: "pkg"
+    grand_tools: "tools"
     grand_radiomorphing: "grand-radiomorphing"
     radio_simus: "radio-simus"
-    shared_libs: "shared-libs"
-    tools: "tools"
 
 
 # Noteworthy urls
