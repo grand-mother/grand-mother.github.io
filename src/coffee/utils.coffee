@@ -1,16 +1,28 @@
+# Mapping of maanaged packages (name: git-name)
+packages =
+    grand_pkg: "pkg"
+    grand_radiomorphing: "grand-radiomorphing"
+    radio_simus: "radio-simus"
+    shared_libs: "shared-libs"
+    tools: "tools"
+
+
 # Noteworthy urls
 url =
     # Formater for github raw files
     raw: (pkg, branch, path) ->
         "https://raw.githubusercontent.com/grand-mother/\
-         #{pkg}/#{branch}/#{path}"
+         #{packages[pkg]}/#{branch}/#{path}"
     # Formater for github API
     api: (pkg, path="") ->
-        "https://api.github.com/repos/grand-mother/#{pkg}#{path}"
+        "https://api.github.com/repos/grand-mother/#{packages[pkg]}#{path}"
+    # Formater for github project page
+    base: (pkg) ->
+        "https://github.com/grand-mother/#{packages[pkg]}"
     # Formater for github blobs
     blob: (pkg, path, branch="master") ->
         pkg = pkg.split(".", 1)[0]
-        "https://github.com/grand-mother/#{pkg}/blob/#{branch}/#{path}"
+        "https://github.com/grand-mother/#{packages[pkg]}/blob/#{branch}/#{path}"
 
 
 # HTML formatters
@@ -64,23 +76,30 @@ format_badge_html = (href, src) ->
 
 
 badge =
-    build: (pkg) -> format_badge_html(
-        "https://travis-ci.com/grand-mother/#{pkg}",
-        "https://travis-ci.com/grand-mother/#{pkg}.svg?branch=master")
-    coverage: (pkg) -> format_badge_html(
-        "https://codecov.io/gh/grand-mother/#{pkg}",
-        "https://codecov.io/gh/grand-mother/#{pkg}\
-            /branch/master/graph/badge.svg")
-    docs: (pkg, score, path) -> format_badge_html(
-        """reports.html?#{pkg}/docs#{if path? then "/" + path else ""}""",
-        "https://img.shields.io/badge/docs-#{score}%25-#{colourmap score}.svg")
-    style: (pkg, score) -> format_badge_html(
-        "https://github.com/grand-mother/#{pkg}\
-            /blob/master/.grand-pkg.json",
-        "https://img.shields.io/badge/pep8-#{score}%25-#{colourmap score}.svg")
-    version: (pkg) -> format_badge_html(
-        "https://pypi.org/project/grand-#{pkg}",
-        "https://img.shields.io/pypi/v/g.svg")
+    build: (pkg) ->
+        format_badge_html(
+            "https://travis-ci.com/grand-mother/#{pkg}",
+            "https://travis-ci.com/grand-mother/#{pkg}.svg?branch=master")
+    coverage: (pkg) ->
+        format_badge_html(
+            "https://codecov.io/gh/grand-mother/#{pkg}",
+            "https://codecov.io/gh/grand-mother/#{pkg}\
+                /branch/master/graph/badge.svg")
+    docs: (pkg, score, path) ->
+        format_badge_html(
+            """reports.html?#{pkg}/docs#{if path? then "/" + path else ""}""",
+            "https://img.shields.io/badge/docs-#{score}%25-\
+                #{colourmap score}.svg")
+    style: (pkg, score) ->
+        format_badge_html(
+            "https://github.com/grand-mother/#{pkg}\
+                /blob/master/.grand-pkg.json",
+            "https://img.shields.io/badge/pep8-#{score}%25-\
+                #{colourmap score}.svg")
+    version: (pkg) ->
+        format_badge_html(
+            "https://pypi.org/project/#{pkg}",
+            "https://img.shields.io/pypi/v/#{pkg}.svg")
 
 
 # Export utilities to a global object
@@ -88,4 +107,5 @@ badge =
     badge: badge
     fa: fa
     html: html
+    packages: packages
     url: url

@@ -1,5 +1,6 @@
 # Unpack the utilities
-[badge, fa, html, url] = [utils.badge, utils.fa, utils.html, utils.url]
+[badge, fa, html, packages, url] = [
+    utils.badge, utils.fa, utils.html, utils.packages, utils.url]
 
 
 # Get and use the statistics of a package
@@ -19,7 +20,16 @@ on_statistics = (pkg, action, branch="master") ->
     )
     .then(
         (old_stats, pkg_data, gh_stats, gh_contrib) ->
-            pkg_stats = if old_stats? then old_stats else pkg_data
+            if old_stats?
+                pkg_stats = old_stats
+                pkg_stats.package =
+                    name: pkg.replace("-", "_")
+                    "git-name": pkg
+                    "dist-name": "grand-" + pkg
+                    "description": "Add a brief description"
+            else
+                pkg_stats = pkg_data
+                pkg = pkg_stats.package.name
             stats = $.extend(gh_stats, pkg_stats)
             stats.contributors = gh_contrib
             action(pkg, stats)
@@ -39,10 +49,9 @@ format_summary = (pkg, statistics) ->
         docs_score = Math.floor(100 * (n_tokens - n_errors) / n_tokens)
     else
         docs_score = 0
-    base_url = "https://github.com/grand-mother/#{pkg}"
     docs_url = "docs.html?#{pkg}"
 
-    gh_ref = html.a(base_url, fa.github, class_="packages-github")
+    gh_ref = html.a(url.base(pkg), fa.github, class_="packages-github")
     doc_ref = html.a(docs_url, pkg, class_="packages-name")
     name = html.h2("#{doc_ref}&nbsp;&nbsp;#{gh_ref}")
     authors = statistics.contributors
@@ -52,15 +61,18 @@ format_summary = (pkg, statistics) ->
 
     item = html.div("""
         #{name}
-        <p class="packages-description">#{statistics.description}</p>
+        <p class="packages-description">#{statistics.package.description}</p>
         <p>#{fa.user}&nbsp;&nbsp;#{authors}</p>
     """, class_="pure-u-3-4")
+
+    git_name = packages[pkg]
+    dist_name = statistics.package["dist-name"]
     badges = html.div("""
-        #{badge.style(pkg, style_score)}
-        #{badge.coverage pkg}
-        #{badge.build pkg}
+        #{badge.style(git_name, style_score)}
+        #{badge.coverage git_name}
+        #{badge.build git_name}
         #{badge.docs(pkg, docs_score)}
-        #{badge.version pkg}
+        #{badge.version dist_name}
     """, class_ = "pure-u-1-4 packages-badges")
 
     $ "\#package-#{pkg}"
@@ -70,13 +82,12 @@ format_summary = (pkg, statistics) ->
 # Set the document loader
 $ document
     .ready ->
-        # List of packages to process
-        packages = ["framework", "radio-simus", "grand-radiomorphing",
-                    "tools", "shared-libs"].sort()
+        # Sort the packages by name
+        pkgs = (k for k of packages).sort()
 
         # Prepare the packages sections, in order to preserve their order
         content = []
-        for pkg in packages
+        for pkg in pkgs
             content.push """
                 <div id="package-#{pkg}"
                      class="packages-item shaded-box shake pure-g">
@@ -87,4 +98,4 @@ $ document
 
         # Fill the sections
         initialise = (pkg) -> on_statistics(pkg, format_summary)
-        initialise pkg for pkg in packages
+        initialise pkg for pkg in pkgs
