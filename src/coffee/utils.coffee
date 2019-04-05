@@ -2,6 +2,7 @@
 packages =
     grand_libs: "libs"
     grand_pkg: "pkg"
+    grand_store: "store"
     grand_tools: "tools"
     grand_radiomorphing: "grand-radiomorphing"
     radio_simus: "radio-simus"
