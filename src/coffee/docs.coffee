@@ -24,9 +24,26 @@ brief = (s) ->
 # Process a docstring by splitting the brief and detailed parts
 process_description = (s) ->
     return ["", ""] if !s?
-    [brief, detail...] = s.split(/\r?\n *\r?\n/)
-    detail = detail.join "\n"
+    r = s.match(/^([\S\s]*?)\r?\n *\r?\n([\S\s]*)/)
+    if r?
+        [_, brief, detail] = r
+    else
+        brief = s
+        detail = ""
     (markdown.makeHtml(v) for v in [brief, detail])
+
+
+# Process a function description by splitting the brief, preamble and sections
+process_function_description = (s) ->
+    return ["", ""] if !s?
+    r = s.match(/^([\S\s]*?)\r?\n *\r?\n([\S\s]*?)\r?\n(.*\r?\n *-{3,}\r?\n[\S\s]*)/)
+    if r?
+        [_, brief, preamble, sections] = r
+    else
+        brief = s
+        preamble = ""
+        sections = ""
+    (markdown.makeHtml(v) for v in [brief, preamble, sections])
 
 
 # Shortcuts for doc references
@@ -169,7 +186,7 @@ decorate_function = (meta) ->
             </tr>
             """
         s.push "</table>"
-        content.push html.div(s.join(""), class_="shaded-box shake")
+        content.push html.div(s.join(""))
 
     # Process any returns or yields
     for category in ["returns", "yields", "raises"]
@@ -186,9 +203,9 @@ decorate_function = (meta) ->
                 </tr>
                 """
             s.push "</table>"
-            content.push html.div(s.join(""), class_="shaded-box shake")
+            content.push html.div(s.join(""))
 
-    content.join ""
+    html.div(content.join(""), class_="shaded-box shake")
 
 
 # Format the functions summary page
@@ -221,16 +238,17 @@ format_function = (pkg, name, docs, navpkg) ->
     path = docs.path if !path?
 
     tl = docref.functions(pkg, tag="Function")
-    [brief, detail] = process_description text
+    [brief, preamble, sections] = process_function_description text
     html.div("""
         <h2>#{tl} #{navpkg.join "."}.#{docref.function(pkg, name)}
             (#{meta.prototype})</h2>
         <div class=\"docs-brief\">#{brief}</div>
+        <div class="docs-detail">#{preamble}</div>
+        #{decorate_function meta}
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
-        #{decorate_function meta}
-        <div class="docs-detail">#{detail}</div>
+        <div class="docs-detail">#{sections}</div>
     """, class_="docs-item")
 
 
@@ -344,15 +362,16 @@ format_method = (pkg, class_name, name, docs, navpkg) ->
     tl = docref.methods(pkg, class_name, tag="Method")
     cl = docref.class(pkg, class_name)
     mt = docref.method(pkg, class_name, name)
-    [brief, detail] = process_description text
+    [brief, preamble, sections] = process_function_description text
     html.div("""
         <h2>#{tl} #{navpkg.join "."}.#{cl}.#{mt} (#{meta.prototype})</h2>
         <div class="docs-brief">#{brief}</div>
+        <div class="docs-detail">#{preamble}</div>
+        #{decorate_function meta}
         <p>Defined at line
             <a href="#{url.blob(pkg, path)}\#L#{line}">#{line}</a>
             in #{html.a(url.blob(pkg, path), path)}.<p>
-        #{decorate_function meta}
-        <div class="docs-detail">#{detail}</div>
+        <div class="docs-detail">#{sections}</div>
     """, class_="docs-item")
 
 
